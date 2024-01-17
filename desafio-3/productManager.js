@@ -5,8 +5,40 @@ import fs from 'fs';
 export class ProductManager {
 
     constructor(path) {
+        this.products = []; //Inicializamos el array de productos vacio
         this.path = path; //Creamos el constructor con el this.path correspondiente
     }
+
+    //Agregamos un nuevo producto al carrito de productos (Se realizan diferentes validaciones y se escribe el archivo JSON).
+    addProduct(product){
+                this.getProducts();
+                const { title, description, price, thumbnail, code, stock } = product;
+        
+                if(!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
+                    return console.log('Debe completar todos los campos ya que son obligatorios.');
+                }
+        
+                const newProduct = {
+                    id: this.products.length + 1,
+                    title,
+                    description,
+                    price,
+                    thumbnail,
+                    code,
+                    stock
+                }
+
+                const repeatedCode = this.products.findIndex(product => product.code === code);
+                if(repeatedCode === -1) {
+                    this.products.push(newProduct);
+
+                    let newProductStr = JSON.stringify(this.products, null, 2)
+                    fs.writeFileSync(this.path, newProductStr)
+                    return 'Producto agregado al archivo'
+                } else {
+                    return('El codigo ya existe, no debe crearse uno nuevo.')
+                }
+            }
 
     //Obtenemos los productos y leemos el archivo con el fs. Verificamos si los productos existen y sino lanzamos un error
     async getProducts(limit) {
@@ -41,3 +73,18 @@ export class ProductManager {
         }
     }
 }
+
+//Codigo de prueba
+const productManager = new ProductManager();
+
+const product5 = {
+    id: 5,
+    title: "Producto 5",
+    description: "Este es el producto 5",
+    price: 20.99,
+    thumbnail: "/",
+    code: "abcdefg1234567",
+    stock: 2,
+};
+
+productManager.addProduct(product5)
