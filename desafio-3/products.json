@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "title": "Producto 1",
+        "description": "Este es el producto 1",
+        "price": 10.99,
+        "thumbnail": "/",
+        "code": "123abc",
+        "stock": 5
+    },
+    {
+        "id": 2,
+        "title": "Producto 2",
+        "description": "Este es el producto 2",
+        "price": 15.99,
+        "thumbnail": "/",
+        "code": "1234abcd",
+        "stock": 5
+    },
+    {
+        "id": 3,
+        "title": "Producto 3",
+        "description": "Este es el producto 3",
+        "price": 20.99,
+        "thumbnail": "/",
+        "code": "12345abcde",
+        "stock": 5
+    },
+    {
+        "id": 4,
+        "title": "Producto 4",
+        "description": "Este es el producto 4",
+        "price": 12.99,
+        "thumbnail": "/",
+        "code": "123456abcdef",
+        "stock": 5
+    }
+]
