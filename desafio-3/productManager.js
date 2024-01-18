@@ -4,7 +4,7 @@ import fs from 'fs';
 export class ProductManager {
     constructor() {
         this.products = []; //Inicializamos el array de productos vacio
-        this.path = "products.json"; //Utilizaremos este archivo JSON para manejar los productos
+        this.path = "./products.json"; //Utilizaremos este archivo JSON para manejar los productos
     }
 
     //Agregamos un nuevo producto al carrito de productos (Se realizan diferentes validaciones y se escribe el archivo JSON).
@@ -14,10 +14,6 @@ export class ProductManager {
 
         if(!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
             return console.log('Debe completar todos los campos ya que son obligatorios.');
-        }
-
-        if(this.products.some((p) => p.code === product.code)) {
-            return console.log('El codigo ya existe, no debe crearse uno nuevo.')
         }
 
         const newProduct = {
@@ -30,21 +26,23 @@ export class ProductManager {
             stock
         }
 
-        this.products.push(newProduct);
+        const repeatedCode = this.products.findIndex(product => product.code === code);
 
-        try {
-            fs.writeFileSync(this.path, JSON.stringify(this.products))
-            console.log("Los datos fueron escritos y guardados correctamente");
+        if(repeatedCode === -1) {
+            this.products.push(newProduct)
 
-        } catch (error) {
-            console.log("Error al escribir el archivo", error)
+            let newProductStringify = JSON.stringify(this.products, null, 2)
+            fs.writeFileSync(this.path, newProductStringify)
+            return 'Archivo escrito correctamente'
+        } else {
+            console.log("Error al escribir el archivo")
         }
     }
 
-    //Leemos todos los productos que estan en el archivo
+    //Leemos todos los productos que estan en el archivo y lo parseamos
     getProducts() {
         try {
-            const data = fs.readFileSync(this.path, "utf8")
+            const data = fs.readFileSync(this.path)
     
             this.products = JSON.parse(data)
             console.log("Archivo leido");
@@ -58,12 +56,12 @@ export class ProductManager {
     //Buscamos productos a traves de su id, si no existen, devolvemos un console.log con "Not Found"
     getProductById(id) {
         this.getProducts()
-        const productFind = this.products.find(product => product.id === id);
+        const productFind = this.products.findIndex(product => product.id === id);
 
-        if (productFind) {
-            console.log(productFind);
+        if (productFind === -1) {
+            return "El producto con ese Id no fue encontrado";
         } else {
-            console.log('Product not found');
+            return this.products[productFind];
         }
     }
 
@@ -111,18 +109,18 @@ export class ProductManager {
 
 
 //Codigo de prueba
-const productManager = new ProductManager();
+// const productManager = new ProductManager();
 
-const product5 = {
-    id: 5,
-    title: "Producto 5",
-    description: "Este es el producto 5",
-    price: 20.99,
-    thumbnail: "/",
-    code: "abcdefg1234567",
-    stock: 2,
-};
+// const product5 = {
+//     id: 5,
+//     title: "Producto 5",
+//     description: "Este es el producto 5",
+//     price: 20.99,
+//     thumbnail: "/",
+//     code: "abcdefg1234567",
+//     stock: 2,
+// };
 
-productManager.addProduct(product5)
-let misProductos = productManager.getProducts();
-console.log(misProductos);
+// productManager.addProduct(product5)
+// let misProductos = productManager.getProducts();
+// console.log(misProductos);
