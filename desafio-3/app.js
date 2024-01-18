@@ -23,37 +23,37 @@ const app = express();
 
 
 //Obtenemos los productos parseados y verificamos si existen, si es asi los presentamos, sino lanzamos un error
-app.get('/products', async(req, res) => {
+app.get('/products', (req, res) => {
     try {
         const limit = parseInt(req.query.limit);
-        const products = await productManager.getProducts(limit);
+        const products = [...productManager.getProducts()];
         let productsParsed = JSON.parse(products);
 
         if(!isNaN(limit) && limit > 0) {
             let productsLimited = productsParsed.slice(0, limit);
             
             if (productsLimited.length > 0) {
-                res.json(productsLimited);
+                res.send(productsLimited);
             } else {
-                res.json(productsParsed);
+                res.send(productsParsed);
             }
         }
 
     } catch (error) {
-        res.json(error);
+        res.send(error);
     }
 })
 
 //Obtenemos los productos en base a su id (Los buscamos desde el ProductManager)
-app.get('/products/:pid', async(req, res) => {
+app.get('/products/:pid', (req, res) => {
     try {
         const id = parseInt(req.params.pid);
-        const product = await productManager.getProductById(id);
+        const product = productManager.getProductById(id);
 
-        res.json(product);
+        return res.send(product);
     }
     catch (error) {
-        res.json(error);
+        return res.send(error);
     }
 })
 
