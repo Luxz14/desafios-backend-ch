@@ -1,10 +1,9 @@
 import fs from 'fs';
 
-
 export class ProductManager {
     constructor() {
         this.products = []; //Inicializamos el array de productos vacio
-        this.path = "./products.json"; //Utilizaremos este archivo JSON para manejar los productos
+        this.path = "./src/data/products.json"; //Utilizaremos este archivo JSON para manejar los productos
     }
 
     //Agregamos un nuevo producto al carrito de productos (Se realizan diferentes validaciones y se escribe el archivo JSON).
