@@ -5,7 +5,7 @@ import {productManager} from './app.js';
 //Creamos la clase, la exportamos para poder reutilizarla y colocamos diferentes metodos
 export class CartManager {
     constructor() {
-        this.path = "./src/data/carts.json";
+        this.path = "./data/carts.json";
     }
 
     //Obtenemos los productos que estan en el carrito, leemos el archivo y hacemos validaciones.
