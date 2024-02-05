@@ -1,7 +1,7 @@
 <h1>Productos: </h1>
 <table id="products-container"></table>
 
-<form id="add-product">
+<form action="/realtimeproducts" id="add-product">
     <h2>Agregar Producto</h2>
 
     <div class="form-field">
@@ -49,4 +49,6 @@
 </form>
 
 <div id="response-container"></div>
+
+<script src="/socket.io/socket.io.js"></script>
 <script src="../public/js/index.js"></script>  
