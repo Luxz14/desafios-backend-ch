@@ -48,7 +48,7 @@ socketServer.on('connection',  (socket) => {
     }
 
     
-    socket.on('new-product',  (newProduct) => {
+    socket.on('new-Product', async (newProduct) => {
         try {
             const newProductObject = {
                 title: newProduct.title,
@@ -69,9 +69,10 @@ socketServer.on('connection',  (socket) => {
     });
         
 
-    socket.on('delete-product',  async(id) => {
+    socket.on('delete-product', async(id) => {
         try {
-            const response = await productManager.deleteProduct(id);
+            const pid = parseInt(id)
+            const response = productManager.deleteProduct(pid);
             const products =  productManager.getProducts();
 
             socketServer.emit('products', products);
