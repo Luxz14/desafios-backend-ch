@@ -6,6 +6,20 @@ export class ProductManager {
         this.path = "./data/products.json"; //Utilizaremos este archivo JSON para manejar los productos
     }
 
+    //Leemos todos los productos que estan en el archivo y lo parseamos
+    getProducts() {
+        try {
+            const data = fs.readFileSync(this.path)
+    
+            this.products = JSON.parse(data)
+            console.log("Archivo leido");
+
+        } catch (error) {
+            console.error("Error al leer el archivo", error)
+        }
+        return this.products
+    }
+
     //Agregamos un nuevo producto al carrito de productos (Se realizan diferentes validaciones y se escribe el archivo JSON).
     addProduct(product){
         this.getProducts();
@@ -36,20 +50,6 @@ export class ProductManager {
         } else {
             console.log("Error al escribir el archivo")
         }
-    }
-
-    //Leemos todos los productos que estan en el archivo y lo parseamos
-    getProducts() {
-        try {
-            const data = fs.readFileSync(this.path)
-    
-            this.products = JSON.parse(data)
-            console.log("Archivo leido");
-
-        } catch (error) {
-            console.error("Error al leer el archivo", error)
-        }
-        return this.products
     }
 
     //Buscamos productos a traves de su id, si no existen, devolvemos un console.log con "Not Found"
@@ -111,16 +111,16 @@ export class ProductManager {
 const productManager = new ProductManager();
 export default productManager;
 
-// const product5 = {
-//     id: 5,
-//     title: "Producto 5",
-//     description: "Este es el producto 5",
-//     price: 20.99,
+// const product6 = {
+//      id: 6,
+//     title: "Producto 6",
+//     description: "Este es el producto 6",
+//      price: 25.99,
 //     thumbnail: "/",
-//     code: "abcdefg1234567",
-//     stock: 2,
-// };
+//     code: "abcdefghij",
+//     stock: 5,
+//  };
 
-// productManager.addProduct(product5)
+// productManager.addProduct(product6)
 // let misProductos = productManager.getProducts();
 // console.log(misProductos);

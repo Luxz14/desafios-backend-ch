@@ -69,7 +69,7 @@ socketServer.on('connection',  (socket) => {
     });
         
 
-    socket.on('remove-product',  async(id) => {
+    socket.on('delete-product',  async(id) => {
         try {
             const response = await productManager.deleteProduct(id);
             const products =  productManager.getProducts();

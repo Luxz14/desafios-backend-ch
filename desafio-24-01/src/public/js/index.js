@@ -1,7 +1,7 @@
 const socket = io();
 
 socket.on ("products", products => {
-
+    console.log(products)
     const productsContainter = document.getElementById("table")
     productsContainter.innerHTML = `
     <tr>
@@ -32,7 +32,7 @@ socket.on ("products", products => {
 document.getElementById("addNewProduct").addEventListener("submit", (event) => {
     event.preventDefault()
 
-    socket.emit("nuevo-producto", {
+    socket.emit("new-Product", {
         title: document.getElementById('title').value,
         description: document.getElementById('description').value,
         code: document.getElementById('code').value,
@@ -48,7 +48,6 @@ document.getElementById("deleteProduct").addEventListener("submit", (event) => {
     const pId = document.querySelector("#id").value
     socket.emit("delete-product", pId )
     event.target.reset();
-
 })
 
 socket.on('response', (response) => {
@@ -57,4 +56,4 @@ socket.on('response', (response) => {
     } else {
         document.getElementById('responseContainer').innerHTML = `<p class="error">${response.message}</p>`;
     }
-});    
+});
