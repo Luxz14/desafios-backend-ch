@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+</head>
+<body>
+    <h1>Bienvenido/a!</h1>
+    <div id="username-form">
+        <h2>Ingrese su usuario</h2>
+        <form action="">
+            <input type="text" id="username" required>
+            <button type="submit">Conectarse al chat</button>
+        </form>
+    </div>
+    <div id="chat-form" style="display: none;">
+        <h2>Sala del chat</h2>
+        <div id="chat-messages"></div>
+        <form action="">
+            <input type="text" id="message">
+            <button type="submit">Enviar mensaje</button>
+        </form>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
