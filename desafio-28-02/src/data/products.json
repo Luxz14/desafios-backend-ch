@@ -1,0 +1,48 @@
+[
+    {
+        "id": 1,
+        "title": "Producto 1 Modificado",
+        "price": 15.99,
+        "category": "Tecnologia"
+    },
+    {
+        "id": 2,
+        "title": "Producto 2",
+        "description": "Este es el producto 2",
+        "price": 15.99,
+        "thumbnail": "/",
+        "code": "1234abcd",
+        "stock": 5,
+        "category": "Ropa"
+    },
+    {
+        "id": 3,
+        "title": "Producto 3",
+        "description": "Este es el producto 3",
+        "price": 20.99,
+        "thumbnail": "/",
+        "code": "12345abcde",
+        "stock": 5,
+        "category": "Electrodomesticos"
+    },
+    {
+        "id": 4,
+        "title": "Producto 4",
+        "description": "Este es el producto 4",
+        "price": 12.99,
+        "thumbnail": "/",
+        "code": "123456abcdef",
+        "stock": 5,
+        "category": "Deporte"
+    },
+    {
+        "id": 5,
+        "title": "Producto 5",
+        "description": "Este es el producto 5",
+        "price": 20.99,
+        "thumbnail": "/",
+        "code": "abcdefg1234567",
+        "stock": 2,
+        "category": "Accesorios"
+    }
+]
