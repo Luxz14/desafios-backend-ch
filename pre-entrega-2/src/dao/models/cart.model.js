@@ -7,10 +7,9 @@ const productSchema = new mongoose.Schema({
         type: [
             {
                 product: {type: Schema.Types.ObjectId, ref: 'Product', required: true},
-                quantity: { type: Number, required: true, integer: true }
+                quantity: { type: Number, required: true }
             }
-        ],
-        default: []
+        ]
     }
 })
 

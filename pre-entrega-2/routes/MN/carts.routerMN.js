@@ -36,7 +36,7 @@ cartRouter.get("/:cid", async (req, res) => {
 });
 
 cartRouter.post ("/", async (req, res) => {
-    let result = await newCart.addCart ()
+    let result = await newCart.addCart();
     res.send ({result: "success", payload: result})
 })
 
@@ -81,5 +81,16 @@ cartRouter.delete("/:cid/products/:pid", async(req, res) => {
     let result = await newCart.deleteProduct(pid, cid) 
     res.send ({result:"success", payload: result})
 })
+
+cartRouter.delete("/:cid", async(req, res) => {
+    try {
+        const { cid } = req.params;
+        const result = await newCart.deleteAllProducts(cid);
+        res.send({ result: "success", payload: result });
+    } catch (error) {
+        console.error("No se pudieron eliminar todos los productos del carrito, intentalo de nuevo", error);
+        res.status(500).send({ error: error.message });
+    }
+});
 
 export default cartRouter

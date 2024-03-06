@@ -6,9 +6,11 @@ import { fileURLToPath } from 'url'
 import {dirname} from 'path'
 import { Server } from "socket.io";
 import { ProductManager } from './dao/fs/ProductManager.js';
-import routerProducts from "../routes/MN/products.routerMN.js"
+import routerRealTimeProducts from "../routes/MN/realTimeProducts.js"
+import routerProducts from "../routes/MN/products.routerMN.js";
 import cartRouter from "../routes/fs/carts.router.js"
 import {messagesRouter, messagesMN} from '../routes/MN/messages.routerMN.js'
+import router from '../routes/MN/realTimeProducts.js';
 
 
 const app = express();
@@ -27,8 +29,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname + "/public")))
 
-app.use("/", routerProducts)
+app.use("/", router)
+app.use("/products", routerProducts)
 app.use("/api/carts", cartRouter)
+app.use("/realTimeProducts", routerRealTimeProducts)
 app.use("/api/chat", messagesRouter)
 
 const productManager = new ProductManager();
@@ -58,6 +62,7 @@ socketServer.on("connection", (socket) => {
                     stock: newProduct.stock,
                     price: newProduct.price,
                     thumbnail: newProduct.thumbnail,
+                    categoria: newProduct.categoria,
     
             }
             const pushProduct = productManager.addProduct(objectProductNew);
@@ -76,7 +81,7 @@ socketServer.on("connection", (socket) => {
             const deleteProduct = productManager.deleteProduct(pid)
             const updatedListProduct = productManager.getProducts()
             socketServer.emit("products", updatedListProduct)
-            socketServer.emit('response', { status: 'success' , message: "Producto eliminado correctamente"});
+            socketServer.emit('response', { status: 'success' , message: "Producto eliminado correctamente"}, deleteProduct);
         } catch (error) {
             socketServer.emit('response', { status: 'error', message: error.message });
         }

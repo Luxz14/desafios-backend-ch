@@ -1,28 +1,29 @@
-<h1>Lista de productos:</h1>
-<table>
+<h1>Productos:</h1>
+
+<table id="table">
     <tr>
         <th>Id:</th>
         <th>Título:</th>
-        <th>Descripcion:</th>
-        <th>Codigo:</th>
-        <th>Stock:</th>
+        <th>Descripción:</th>
+        <th>Código:</th>
         <th>Precio:</th>
-        <th>Imagenes:</th>
-        <th>Categoria:</th>
+        <th>Stock:</th>
+        <th>Categoría:</th>
+        <th>Imágen:</th>
     </tr>
-
     {{#each products}}
         <tr>
-            <td>{{_id}}</td>
+            <td>{{id}}</td>
             <td>{{title}}</td>
             <td>{{description}}</td>
             <td>{{code}}</td>
+            <td>{{price}}</td>
             <td>{{stock}}</td>
-            <td>${{price}}</td>
-            <td>{{thumbnail}}</td>
             <td>{{category}}</td>
+            <td>{{thumbnail}}</td>
             <td>
-                <button class="addToCartButton" data-productid="{{_id}}">Agregar al Carrito</button> 
+                <button class="addToCartButton" data-productId="{{_id}}">Agregar Producto</button>
+                <button class="detailButton" data-productId="{{_id}}">Detalle del Producto</button>  
             </td>
         </tr>
     {{/each}}
@@ -30,12 +31,27 @@
 
 <div>
     {{#if hasPrevPage}}
-        <a href={{this.prevLink}}> << Anterior</a>
-    {{/if}}
-    &nbsp;
-        {{this.page}}
-    &nbsp;
-    {{#if hasNextPage}}
-        <a href={{this.nextLink}}>Siguiente >> </a>
-    {{/if}}
+    <a class="prevPageLink" href="/products?page={{prevPage}}&limit={{limit}}">Anterior Pagina</a>
+{{/if}}
+{{#if hasNextPage}}
+    <a class="nextPageLink" href="/products?page={{nextPage}}&limit={{limit}}">Siguiente Pagina</a>
+{{/if}}
 </div>
+
+<script>
+        document.querySelectorAll('.detailButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-productId');
+            window.location.href = `/products/details/${productId}`;
+        });
+    });
+
+    document.querySelectorAll('.addToCartButton').forEach(button => {
+    button.addEventListener('click', function() {
+        const productId = this.getAttribute('data-productId');
+        socket.emit("addToCart", productId);
+    });
+});
+</script>
+
+<script src="/socket.io/socket.io.js"></script>

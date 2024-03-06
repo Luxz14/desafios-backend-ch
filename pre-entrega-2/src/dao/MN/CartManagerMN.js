@@ -42,20 +42,21 @@ export class CartManagerMN {
             }
 
 
-            const existingProduct = cartExists.product.find(product => product.productId.toString() === pid.toString());
+            const existingProduct = cartExists.products.find(product => product.productId.toString() === pid.toString());
             if (existingProduct) {
                 existingProduct.quantity++;
             } else {
-                cartExists.product.push({
+                cartExists.products.push({
                     productId: pid,
                     product: productExists,
                     quantity: 1
                 });
             }
+
             await cartExists.save(); 
-            return "Producto agregado exitosamente";
+            return "Producto agregado exitosamente!";
         } catch (error) {
-            console.error("Error al agregar el producto al carrito:", error);
+            console.error("Error al agregar el producto al carrito", error);
             
         }
     }
@@ -67,12 +68,13 @@ export class CartManagerMN {
                 throw new Error(`No se encontró el carrito con id ${cid}`);
             }
     
-            const productIndex = cart.product.findIndex(product => product.productId.toString() === pid.toString());
+            const productIndex = cart.products.findIndex(product => product.productId.toString() === pid.toString());
             if (productIndex === -1) {
                 throw new Error(`No se encontró el producto con id ${pid} en el carrito`);
             }
     
-            cart.product.splice(productIndex, 1); 
+            cart.products.splice(productIndex, 1);
+        
             await cart.save();
             return "Producto eliminado exitosamente del carrito";
         } catch (error) {
@@ -80,4 +82,55 @@ export class CartManagerMN {
             throw error;
         }
     }
+
+    async updateCart(cart) {
+        try {
+            await this.model.findByIdAndUpdate(cart._id, cart);
+            return "Se actualizo el carrito correctamente";
+        } catch (error) {
+            console.error("No se pudo actualizar el carrito", error);
+            throw error;
+        }
+    }    
+
+    async updateCartTotal(cid, pid, quantity) {
+        try {
+            const cart = await this.model.findById(cid);
+
+            if(!cart) {
+                throw new Error(`No se encontro el carrito con el id: ${cid}`);
+            }
+
+            const productIndex = cart.products.findIndex(product => product.productId.toString() === pid.toString());
+            if (productIndex === -1) {
+                throw new Error(`No se encontró el producto con id: ${pid} en este carrito`);
+            }
+
+            cart.products[productIndex].quantity = quantity;
+
+            await this.updateCart(cart);
+
+            return "Cantidad de producto actualizada";
+
+        } catch (error) {
+            console.error("Error al actualizar la cantidad del producto en el carrito", error);
+        }
+    }
+
+    async deleteAllProducts(cid) {
+        try {
+            const cart = await this.model.findById(cid);
+            if (!cart) {
+                throw new Error(`No se encontro el carrito con el id: ${cid}`);
+            }
+            cart.products = []; 
+            await this.updateCart(cart);
+    
+            return "Todos los productos fueron eliminados exitosamente";
+        } catch (error) {
+            console.error("Error al eliminar todos los productos del carrito", error);
+        }
+    }
 }
+
+    

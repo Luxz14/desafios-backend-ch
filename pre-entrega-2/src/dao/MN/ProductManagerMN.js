@@ -5,7 +5,7 @@ export class ProductManagerMN {
         this.model = productModel
     }
 
-    async getProducts(page, limit, sortOrder, category){
+    async getProducts(page, limit, sortOrder, category) {
         try {
             const categories = {
                 page: page || 1,
@@ -15,7 +15,7 @@ export class ProductManagerMN {
 
             const query = category ? {category: category} : {};
 
-            return await this.model.paginate(...query, categories);
+            return await this.model.paginate({query}, categories);
 
         } catch (error) {
             console.error("Error al mostrar los productos, intentalo de nuevo", error);

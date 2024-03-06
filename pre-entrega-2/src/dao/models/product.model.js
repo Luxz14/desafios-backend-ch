@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
     code: {type: String, required: true, unique: true},
     stock: {type: Number, required: true},
     thumbnail: {type: String},
-    category: {type: String, enum: ["Tecnologia", "Electrodomesticos", "Ropa", "Deporte", "Accesorios"]},
+    category: {type: String},
 })
 
 productSchema.plugin(mongoosePaginate);
