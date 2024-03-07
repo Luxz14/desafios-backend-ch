@@ -41,6 +41,11 @@ app.use(session ({
     saveUninitialized: false
 }))
 
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+})
+
 app.use("/", router)
 app.use("/products", routerProducts)
 app.use("/api/carts", cartRouter)
