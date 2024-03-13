@@ -14,6 +14,7 @@ import router from '../routes/MN/realTimeProducts.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import loginRouter from '../routes/MN/login.router.js';
+import { CartManagerMN } from './dao/MN/CartManagerMN.js';
 
 
 const app = express();
@@ -57,6 +58,7 @@ app.set('view engine', "handlebars")
 
 
 const productManager = new ProductManager();
+const cartMongo = new CartManagerMN();
 
 const httpsServer = app.listen(PORT, () => {
     console.log(`Servidor con express online en el Port: ${PORT}`);
@@ -105,6 +107,19 @@ socketServer.on("connection", (socket) => {
             socketServer.emit('response', { status: 'success' , message: "Producto eliminado correctamente"}, deleteProduct);
         } catch (error) {
             socketServer.emit('response', { status: 'error', message: error.message });
+        }
+    })
+
+    socket.on("addToCart", async(productId) => {
+        try {
+            const ObjectId = mongoose.Types.ObjectId;
+            const cartId = new ObjectId();
+            const result = await cartMongo.addToCart(cartId, productId);
+            socket.emit("addToCartResponse", { status: "success", message: result });
+
+        } catch (error) {
+            console.error("No se pudo agregar el producto al carrito", error);
+            socket.emit("addToCartResponse", { status: "error", message: error.message });
         }
     })
 })
