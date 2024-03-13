@@ -20,9 +20,10 @@ loginRouter.post("/signup", async (req, res) => {
     }
 
     try {
-        await newUserManager.newUser(req.body);
+        await newUserManager.newUser(first_name, last_name, email, password);
         req.session.signupSuccess = true;
-        res.redirect('/');
+        res.redirect('/login');
+        delete req.session.signupSuccess;
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -44,6 +45,7 @@ loginRouter.post("/login", async (req, res) => {
         req.session.user = { email, first_name: user.first_name };
         req.session.loginSuccess = true; 
         res.redirect('/products');
+        delete req.session.loginSuccess;
 
     } catch (error) {
         res.status(500).json({ error: error.message });

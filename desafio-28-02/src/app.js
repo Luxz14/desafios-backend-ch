@@ -22,19 +22,11 @@ const PORT = 8080;
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-app.engine("handlebars", handlebars.engine())
-app.set("views", __dirname + '/views')
-app.set('view engine', 'handlebars')
-app.use(express.static(__dirname + "/views"))
-app.use(express.static(path.join(__dirname, "public")))
+mongoose.connect("mongodb+srv://hamiltonprop03:2BVWOVIyMW5j0pmY@cluster0.f5bo2kd.mongodb.net/sesiones?retryWrites=true&w=majority&appName=Cluster0")
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname + "/public")))
-
-app.use(session ({
+app.use(session({
     store: new MongoStore({
-        mongoUrl: "mongodb+srv://hamiltonprop03:2BVWOVIyMW5j0pmY@cluster0.f5bo2kd.mongodb.net/ecommerce?retryWrites=true&w=majority"
+        mongoUrl: "mongodb+srv://hamiltonprop03:2BVWOVIyMW5j0pmY@cluster0.f5bo2kd.mongodb.net/sesiones?retryWrites=true&w=majority&appName=Cluster0"
     }),
     secret: "123456789",
     resave: false,
@@ -52,6 +44,17 @@ app.use("/api/carts", cartRouter)
 app.use("/realTimeProducts", routerRealTimeProducts)
 app.use("/api/chat", messagesRouter)
 app.use("/api/session", loginRouter)
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static(`${__dirname}/public`))
+
+app.use(express.static(__dirname + '/views'))
+app.use(express.static(path.join(`${__dirname}/public`)));
+app.engine("handlebars", handlebars.engine())
+app.set('views', `${__dirname}/views`)
+app.set('view engine', "handlebars")
+
 
 const productManager = new ProductManager();
 
@@ -135,14 +138,14 @@ io.on ("connection", (socket) => {
     })
 })
 
-const enviroment = async() => {
-    await mongoose.connect("mongodb+srv://hamiltonprop03:2BVWOVIyMW5j0pmY@cluster0.f5bo2kd.mongodb.net/ecommerce?retryWrites=true&w=majority")
-    .then(() => {
-        console.log("Conectado a la base de datos");
-    })
-    .catch(error => {
-        console.log("Error al conectarse a la base de datos", error);
-    })
-}
+// const enviroment = async() => {
+//     await mongoose.connect("mongodb+srv://hamiltonprop03:2BVWOVIyMW5j0pmY@cluster0.f5bo2kd.mongodb.net/ecommerce?retryWrites=true&w=majority")
+//     .then(() => {
+//         console.log("Conectado a la base de datos");
+//     })
+//     .catch(error => {
+//         console.log("Error al conectarse a la base de datos", error);
+//     })
+// }
 
-enviroment();
+// enviroment();
