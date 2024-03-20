@@ -13,8 +13,10 @@ import {messagesRouter, messagesMN} from '../routes/MN/messages.routerMN.js'
 import router from '../routes/MN/realTimeProducts.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-import loginRouter from '../routes/MN/login.router.js';
 import { CartManagerMN } from './dao/MN/CartManagerMN.js';
+import passport from 'passport';
+import initializePassport from "../src/config/passport.config.js"
+import routerSessions from '../routes/MN/sessions.routerMN.js';
 
 
 const app = express();
@@ -44,7 +46,7 @@ app.use("/products", routerProducts)
 app.use("/api/carts", cartRouter)
 app.use("/realTimeProducts", routerRealTimeProducts)
 app.use("/api/chat", messagesRouter)
-app.use("/api/session", loginRouter)
+app.use("/api/sessions", routerSessions);
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -55,6 +57,32 @@ app.use(express.static(path.join(`${__dirname}/public`)));
 app.engine("handlebars", handlebars.engine())
 app.set('views', `${__dirname}/views`)
 app.set('view engine', "handlebars")
+
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.post("/signup", passport.authenticate("signup", {
+    successRedirect: "/products",
+    failureRedirect: "/failregister"
+}));
+
+
+app.post("/login", passport.authenticate("login", {
+    successRedirect: "/products",
+    failureRedirect: "/login",
+    failureFlash: true
+}));
+
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/login");
+});
+
+
 
 
 const productManager = new ProductManager();
