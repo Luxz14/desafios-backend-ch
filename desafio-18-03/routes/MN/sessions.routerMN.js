@@ -52,4 +52,4 @@ routerSessions.get("/signout", async (req, res) => {
 });
 
 
-export default routerSessions;
+export default routerSessions

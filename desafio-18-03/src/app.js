@@ -83,8 +83,6 @@ app.get("/logout", (req, res) => {
 });
 
 
-
-
 const productManager = new ProductManager();
 const cartMongo = new CartManagerMN();
 
