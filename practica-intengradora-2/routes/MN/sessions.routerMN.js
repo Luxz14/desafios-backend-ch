@@ -10,7 +10,7 @@ routerSessions.post("/signup", passport.authenticate("signup", {
 });
 
 routerSessions.get("/failregister", async (req, res) => {
-    console.log("Registro fallido")
+    console.log("Registro fallido, intentalo de nuevo")
     res.status(400).send({ error: "Fallo en el registro" })
 });
 
